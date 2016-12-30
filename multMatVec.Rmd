@@ -28,11 +28,11 @@ require(microbenchmark)
 Rcpp::sourceCpp('multChar-vec.cpp')
 
 print(microbenchmark(
-  RCPP1 = test1 <- prod1(Xchar@address, y),
-  RCPP4 = test2 <- prod4(Xchar@address, y),
-  EIGEN = test3 <- prodEigen(Xchar@address, y),
-  ARMA  = test4 <- prodArma(Xchar@address, y),
-  ARMA_SUB = test5 <- prodArmaSub(Xchar@address, y, ind - 1),
+  RCPP1 = test1 <- prod1_char(Xchar@address, y),
+  RCPP4 = test2 <- prod4_char(Xchar@address, y),
+  EIGEN = test3 <- prodEigen_char(Xchar@address, y),
+  ARMA  = test4 <- prodArma_char(Xchar@address, y),
+  ARMA_SUB = test5 <- prodArmaSub_char(Xchar@address, y, ind - 1),
   times = 5
 ))
 
@@ -56,11 +56,11 @@ print(sum(is.na(Xdouble[,])))
 Rcpp::sourceCpp('multDouble-vec.cpp')
 
 print(microbenchmark(
-  RCPP1 = test1 <- prod1(Xdouble@address, y),
-  RCPP4 = test2 <- prod4(Xdouble@address, y),
-  EIGEN = test3 <- prodEigen(Xdouble@address, y),
-  ARMA  = test4 <- prodArma(Xdouble@address, y),
-  ARMA_SUB = test5 <- prodArmaSub(Xdouble@address, y, ind - 1),
+  RCPP1 = test1 <- prod1_double(Xdouble@address, y),
+  RCPP4 = test2 <- prod4_double(Xdouble@address, y),
+  EIGEN = test3 <- prodEigen_double(Xdouble@address, y),
+  ARMA  = test4 <- prodArma_double(Xdouble@address, y),
+  ARMA_SUB = test5 <- prodArmaSub_double(Xdouble@address, y, ind - 1),
   times = 5
 ))
 

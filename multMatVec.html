@@ -143,20 +143,20 @@ ind &lt;- sort(sample(n, size = n/2))</code></pre>
 <pre class="r"><code>Rcpp::sourceCpp('multChar-vec.cpp')
 
 print(microbenchmark(
-  RCPP1 = test1 &lt;- prod1(Xchar@address, y),
-  RCPP4 = test2 &lt;- prod4(Xchar@address, y),
-  EIGEN = test3 &lt;- prodEigen(Xchar@address, y),
-  ARMA  = test4 &lt;- prodArma(Xchar@address, y),
-  ARMA_SUB = test5 &lt;- prodArmaSub(Xchar@address, y, ind - 1),
+  RCPP1 = test1 &lt;- prod1_char(Xchar@address, y),
+  RCPP4 = test2 &lt;- prod4_char(Xchar@address, y),
+  EIGEN = test3 &lt;- prodEigen_char(Xchar@address, y),
+  ARMA  = test4 &lt;- prodArma_char(Xchar@address, y),
+  ARMA_SUB = test5 &lt;- prodArmaSub_char(Xchar@address, y, ind - 1),
   times = 5
 ))</code></pre>
 <pre><code>## Unit: milliseconds
 ##      expr      min       lq     mean   median       uq      max neval
-##     RCPP1 413.4353 413.8518 415.2168 415.1983 415.5377 418.0610     5
-##     RCPP4 177.2879 177.9532 179.7180 179.8697 180.9541 182.5253     5
-##     EIGEN 410.3236 410.7875 413.7925 415.0701 415.1630 417.6185     5
-##      ARMA 452.5934 454.1579 456.2867 456.3560 456.4440 461.8824     5
-##  ARMA_SUB 301.6718 301.9360 311.6838 307.3419 308.0784 339.3911     5</code></pre>
+##     RCPP1 414.0237 414.3168 416.0954 416.1094 417.9794 418.0479     5
+##     RCPP4 180.5561 181.2935 182.8031 183.0752 183.8415 185.2493     5
+##     EIGEN 413.3544 417.7352 417.7048 418.1196 418.7025 420.6124     5
+##      ARMA 453.2281 456.9068 458.1060 457.3643 461.3736 461.6571     5
+##  ARMA_SUB 303.5639 306.8582 309.2810 307.2204 311.5671 317.1956     5</code></pre>
 <pre class="r"><code>print(all(
   all.equal(test2, test1),
   all.equal(test3, test1),
@@ -174,20 +174,20 @@ print(sum(is.na(Xdouble[,])))</code></pre>
 <pre class="r"><code>Rcpp::sourceCpp('multDouble-vec.cpp')
 
 print(microbenchmark(
-  RCPP1 = test1 &lt;- prod1(Xdouble@address, y),
-  RCPP4 = test2 &lt;- prod4(Xdouble@address, y),
-  EIGEN = test3 &lt;- prodEigen(Xdouble@address, y),
-  ARMA  = test4 &lt;- prodArma(Xdouble@address, y),
-  ARMA_SUB = test5 &lt;- prodArmaSub(Xdouble@address, y, ind - 1),
+  RCPP1 = test1 &lt;- prod1_double(Xdouble@address, y),
+  RCPP4 = test2 &lt;- prod4_double(Xdouble@address, y),
+  EIGEN = test3 &lt;- prodEigen_double(Xdouble@address, y),
+  ARMA  = test4 &lt;- prodArma_double(Xdouble@address, y),
+  ARMA_SUB = test5 &lt;- prodArmaSub_double(Xdouble@address, y, ind - 1),
   times = 5
 ))</code></pre>
 <pre><code>## Unit: milliseconds
 ##      expr       min        lq      mean    median        uq       max neval
-##     RCPP1  86.43332  88.32386  89.92070  88.74931  91.08053  95.01651     5
-##     RCPP4  56.78806  61.63688  61.16177  61.80541  61.94810  63.63039     5
-##     EIGEN  55.80915  55.86561  58.68345  60.48492  60.55326  60.70430     5
-##      ARMA  60.13042  62.20522  62.94639  63.90958  64.19766  64.28905     5
-##  ARMA_SUB 189.99587 195.30014 200.36913 195.81090 200.00534 220.73342     5</code></pre>
+##     RCPP1  87.96039  90.85536  91.16510  91.43139  91.54692  94.03142     5
+##     RCPP4  56.93024  61.26673  61.15911  61.83449  61.99574  63.76834     5
+##     EIGEN  55.88690  60.49684  60.04251  60.51229  61.02344  62.29306     5
+##      ARMA  59.14665  59.64356  63.61779  64.05439  65.99145  69.25291     5
+##  ARMA_SUB 183.13929 188.19196 191.24736 189.14720 194.77968 200.97868     5</code></pre>
 <pre class="r"><code>print(all(
   all.equal(test2, test1),
   all.equal(test3, test1),

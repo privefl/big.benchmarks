@@ -9,7 +9,7 @@ using namespace Rcpp;
 /******************************************************************************/
 
 // [[Rcpp::export]]
-NumericVector prod1(XPtr<BigMatrix> bMPtr, const NumericVector& x) {
+NumericVector prod1_char(XPtr<BigMatrix> bMPtr, const NumericVector& x) {
   
   MatrixAccessor<char> macc(*bMPtr);
   
@@ -31,7 +31,7 @@ NumericVector prod1(XPtr<BigMatrix> bMPtr, const NumericVector& x) {
 /******************************************************************************/
 
 // [[Rcpp::export]]
-NumericVector prod4(XPtr<BigMatrix> bMPtr, const NumericVector& x) {
+NumericVector prod4_char(XPtr<BigMatrix> bMPtr, const NumericVector& x) {
   
   MatrixAccessor<char> macc(*bMPtr);
   
@@ -61,8 +61,8 @@ NumericVector prod4(XPtr<BigMatrix> bMPtr, const NumericVector& x) {
 typedef Eigen::Matrix<char, Eigen::Dynamic, Eigen::Dynamic> MatrixXchar;
 
 // [[Rcpp::export]]
-Eigen::VectorXd prodEigen(XPtr<BigMatrix> bMPtr, 
-                          const Eigen::Map<Eigen::VectorXd> x) {
+Eigen::VectorXd prodEigen_char(XPtr<BigMatrix> bMPtr, 
+                               const Eigen::Map<Eigen::VectorXd> x) {
   
   Eigen::Map<MatrixXchar> bM((char *)bMPtr->matrix(), 
                              bMPtr->nrow(), bMPtr->ncol());
@@ -73,7 +73,7 @@ Eigen::VectorXd prodEigen(XPtr<BigMatrix> bMPtr,
 /******************************************************************************/
 
 // [[Rcpp::export]]
-arma::vec prodArma(XPtr<BigMatrix> xpA, const arma::vec& x) {
+arma::vec prodArma_char(XPtr<BigMatrix> xpA, const arma::vec& x) {
   
   arma::Mat<char> Am((char*) xpA->matrix(), xpA->nrow(), xpA->ncol(), false);
   
@@ -83,8 +83,8 @@ arma::vec prodArma(XPtr<BigMatrix> xpA, const arma::vec& x) {
 /******************************************************************************/
 
 // [[Rcpp::export]]
-arma::vec prodArmaSub(XPtr<BigMatrix> xpA, const arma::vec& x,
-                      const arma::Row<uint32_t>& ind) {
+arma::vec prodArmaSub_char(XPtr<BigMatrix> xpA, const arma::vec& x,
+                           const arma::Row<uint32_t>& ind) {
   arma::Mat<char> Am((char *) xpA->matrix(), xpA->nrow(), xpA->ncol(), false);
   
   return Am.rows(ind) * x;
