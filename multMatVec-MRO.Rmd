@@ -1,0 +1,81 @@
+---
+title: "Matrix-vector multiplication, with MRO"
+author: "Florian Privé"
+date: "30 décembre 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+options(width = 80)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Using Microsoft R Open
+
+```{r}
+print(Revo.version)
+```
+
+
+## Type char
+
+```{r}
+require(bigmemory)
+
+Xchar <- big.matrix(1e4, 1e4, type = "char", shared = FALSE)
+Xchar[] <- sample(-127:127, size = length(Xchar), replace = TRUE)
+print(sum(is.na(Xchar[,])))
+y <- rnorm(ncol(Xchar))
+n <- nrow(Xchar)
+ind <- sort(sample(n, size = n/2))
+```
+
+```{r}
+require(microbenchmark)
+Rcpp::sourceCpp('multChar-vec.cpp')
+
+print(microbenchmark(
+  RCPP1 = test1 <- prod1_char(Xchar@address, y),
+  RCPP4 = test2 <- prod4_char(Xchar@address, y),
+  EIGEN = test3 <- prodEigen_char(Xchar@address, y),
+  ARMA  = test4 <- prodArma_char(Xchar@address, y),
+  ARMA_SUB = test5 <- prodArmaSub_char(Xchar@address, y, ind - 1),
+  times = 5
+))
+
+print(all(
+  all.equal(test2, test1),
+  all.equal(test3, test1),
+  all.equal(as.numeric(test4), test1),
+  all.equal(as.numeric(test5), test1[ind])
+))
+```
+
+## Type double
+
+```{r}
+Xdouble <- big.matrix(1e4, 1e4, type = "double", shared = FALSE)
+Xdouble[] <- rnorm(length(Xdouble))
+print(sum(is.na(Xdouble[,])))
+```
+
+```{r}
+Rcpp::sourceCpp('multDouble-vec.cpp')
+
+print(microbenchmark(
+  RCPP1 = test1 <- prod1_double(Xdouble@address, y),
+  RCPP4 = test2 <- prod4_double(Xdouble@address, y),
+  EIGEN = test3 <- prodEigen_double(Xdouble@address, y),
+  ARMA  = test4 <- prodArma_double(Xdouble@address, y),
+  ARMA_SUB = test5 <- prodArmaSub_double(Xdouble@address, y, ind - 1),
+  times = 5
+))
+
+print(all(
+  all.equal(test2, test1),
+  all.equal(test3, test1),
+  all.equal(as.numeric(test4), test1),
+  all.equal(as.numeric(test5), test1[ind])
+))
+```
+
